@@ -18,57 +18,64 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.workRequestobject.MemberRequestobject;
+import com.web.workRequestobject.WorkOutLogRequest;
 import com.web.workoutEntity.Member;
 import com.web.workoutService.WorkOutService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/workouts")
+//@RequestMapping("/api/workouts")
 public class WorkOutController {
 	
 	@Autowired
 	private WorkOutService workOutService;
 	
-	@GetMapping("/Member/GetAllMember")
+	@GetMapping("/api/workouts/Member/GetAllMember")
 	public ResponseEntity<List<Member>> getAllMember(){
 		
 		List<Member> listOfmemberList = workOutService.getFindAllMember();
-		if(listOfmemberList !=null) {
-		return (ResponseEntity<List<Member>>) listOfmemberList;
-		}
-		return new ResponseEntity<List<Member>>(HttpStatus.BAD_REQUEST);
+		return ResponseEntity.ok(listOfmemberList);
 		
 	}
-	@PostMapping("/createMember")
-	public ResponseEntity<String> createMember(@Valid @RequestBody MemberRequestobject member){
-		Optional<@Valid MemberRequestobject> memberOptional = Optional.of(member);
-		if(memberOptional.isPresent()) {
-			workOutService.saveMember(member);
-		}
-				 
-		return new ResponseEntity<String>(HttpStatus.OK);		
+	@PostMapping("/api/workouts/createMember")
+	public ResponseEntity<String> createMember( @RequestBody MemberRequestobject member) {
+
+	    workOutService.saveMember(member);
+	    return ResponseEntity.status(HttpStatus.CREATED)
+	            .body("Member created successfully");
 	}
-	@GetMapping("/Member/{id}")
+	@GetMapping("/api/workouts/{memberId}")
 	public ResponseEntity<Member> findBymemberId(@PathVariable long memberId){
 		Member member = workOutService.findByMemberId(memberId);
-		return new ResponseEntity<Member>((HttpStatusCode) member);
+		return ResponseEntity.ok(member);
 	}
-	@PutMapping("{id}")
+	@PutMapping("/api/workouts/{memberId}")
 	public ResponseEntity<Member> updateAllMember(@PathVariable long memberId,@RequestBody MemberRequestobject member){
-		return null;
-		
+		   Member updated = workOutService.updateMemberById(memberId, member);
+	        return ResponseEntity.ok(updated);	
 	}
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/api/workouts/{id}")
 	public ResponseEntity<String> deletedByMemberId(@PathVariable long memberId){		
 		workOutService.deletedByMemberId(memberId);
-		return new ResponseEntity<String>(HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body("Member is deleted");
 	}
-	@GetMapping("memberId")
+	@GetMapping("/api/workouts/memberId")
 	public ResponseEntity<List<Member>> getWorkOutByMember(@RequestParam long memberId){
 	List<Member> listOfMembers =	workOutService.getworkoutByMemebr(memberId);
-		return (ResponseEntity<List<Member>>) listOfMembers;
+		return ResponseEntity.ok(listOfMembers);
 		
 	}
+	@PostMapping("/api/workouts/workoutLogs")
+	public ResponseEntity<String> createWorkLogs(@Valid @RequestBody WorkOutLogRequest workOutLogRequest){
+		if(workOutLogRequest !=null) {
+			workOutService.saveWorkoutLogs(workOutLogRequest);
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body("Workout logs are created successfully");
+	}
+	
+	@PostMapping("/api/workouts/members")
+	public String create(@RequestBody @Valid MemberRequestobject dto) {
+		return "Post API working successfully"; }
 }

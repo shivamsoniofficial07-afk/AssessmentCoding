@@ -16,26 +16,29 @@ public class Member {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long memberId;
+	private Long  id;
 	
 	@Column
-	private String Name;
+	private String name;
 	
 	private Date joinDate;
 
-	public long getMemberId() {
-		return memberId;
+	
+
+	public Long getId() {
+		return id;
 	}
-	public void setMemberId(long memberId) {
-		memberId = memberId;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		name = name;
 	}
 
 	public Date getJoinDate() {
@@ -47,13 +50,5 @@ public class Member {
 	}
 
 
-
-
-	@Override
-	public String toString() {
-		return "Member [MemberId=" + memberId + ", Name=" + Name + ", joinDate=" + joinDate + "]";
-	}
-	
-	
 
 }

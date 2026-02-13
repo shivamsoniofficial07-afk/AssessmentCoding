@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-public class WorkOutLog {
+public class WorkOutLogRequest {
 	
 	
 	private long id;
@@ -36,7 +36,7 @@ public class WorkOutLog {
 	@NotBlank
 	private String note;
 
-	public WorkOutLog(long id, @NotBlank Date workoutDate, @NotBlank String exerciseName,
+	public WorkOutLogRequest(long id, @NotBlank Date workoutDate, @NotBlank String exerciseName,
 			@NotNull @PositiveOrZero Integer set, @NotBlank @PositiveOrZero Integer reps, float weight,
 			@NotBlank String note) {
 		super();
@@ -47,6 +47,10 @@ public class WorkOutLog {
 		this.reps = reps;
 		this.weight = weight;
 		this.note = note;
+	}
+
+	public WorkOutLogRequest() {
+		
 	}
 
 	public long getId() {

@@ -4,10 +4,12 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -17,7 +19,7 @@ public class WorkoutLog {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long  id;
 	
 	@Column
 	private Date workoutDate;
@@ -25,10 +27,10 @@ public class WorkoutLog {
 	@Column
 	private String exerciseName;
 	
-	@Column
-	private Integer set;
+	@Column(name = "sets")
+	private Integer sets;
 	
-	@Column
+	@Column(name="reps")
 	private Integer reps;
     
 	@Column
@@ -37,22 +39,9 @@ public class WorkoutLog {
 	@Column
 	private String note;
 	
-	@OneToMany
-	@JoinColumn(name = "memberId")
+	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
+	 @JoinColumn(name = "member_id", nullable = false)
 	private Member member;
-
-	public WorkoutLog(long id, Date workoutDate, String exerciseName, Integer set, Integer reps, float weight,
-			String note) {
-		super();
-		this.id = id;
-		this.workoutDate = workoutDate;
-		this.exerciseName = exerciseName;
-		this.set = set;
-		this.reps = reps;
-		this.weight = weight;
-		this.note = note;
-	}
-
 	public long getId() {
 		return id;
 	}
@@ -78,11 +67,11 @@ public class WorkoutLog {
 	}
 
 	public Integer getSet() {
-		return set;
+		return sets;
 	}
 
 	public void setSet(Integer set) {
-		this.set = set;
+		this.sets = set;
 	}
 
 	public Integer getReps() {
@@ -112,7 +101,7 @@ public class WorkoutLog {
 	@Override
 	public String toString() {
 		return "WorkoutLog [id=" + id + ", workoutDate=" + workoutDate + ", exerciseName=" + exerciseName + ", set="
-				+ set + ", reps=" + reps + ", weight=" + weight + ", note=" + note + "]";
+				+ sets + ", reps=" + reps + ", weight=" + weight + ", note=" + note + "]";
 	}
 	
 	
